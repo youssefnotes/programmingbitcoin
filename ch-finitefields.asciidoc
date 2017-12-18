@@ -12,7 +12,7 @@ In any case, this is my way of telling you that Finite Fields are not that hard 
 
 Mathematically, a Finite Field is defined as follows:
 
-A finite set of numbers and two operations *+* and *⋅* that satisfy the following:
+A finite set of numbers and two operations *+* (addition) and *⋅* (multiplication) that satisfy the following:
 
 * if *a* and *b* are in the set, *a+b* and *a⋅b* is in the set. We call this property _closed_
 * if *a* is in the set, *-a* is in the set, or what we call the _additive inverse_.
@@ -50,6 +50,123 @@ F~981~= {0, 1, 2, ... 980}
 
 Notice the order of the field is always 1 more than the largest element.
 
-=== Defining Addition
+== Modulo Arithmetic
 
-We can define addition on the finite set using something called modulo arithmetic.
+We can define addition on the finite set using something called modulo arithmetic. Modulo arithmetic is something you probably did back in elementary school. Remember problems like this?
+
+
+TODO: Put long division image
+
+
+Whenever the division wasn't even, there was something called the "remainder" which is the leftover from the actual division. We can actually define modulo in the same way. We use the operator *%* for "modulo".
+
+7 % 3 = 1
+
+Because
+
+TODO: Put long division image
+
+We can do the same for larger numbers:
+
+1747 % 241 = 60
+
+If it helps, you can think of modulo arithmetic as "wrap-around" or "clock" math. Imagine a problem like this:
+
+It is currently 3 o'clock. What hour will it be 47 hours from now?
+
+The answer is 2 o'clock because:
+
+(3 + 47) % 12 = 2
+
+We can also see this as "wrapping around" in the sense that you go back to zero every time we move ahead 12 hours.
+
+We can also do modulo on negative numbers. For example, you can ask:
+
+It is currently 3 o'clock. What hour was it 16 hours ago?
+
+The answer is 11 o'clock. Hence we can say:
+
+(3 - 16) % 12 = 11
+
+The minute hand is also a modulo operation. For example, you can ask:
+
+It is currently 12 minutes past the hour. What minute will it be 843 minutes from now?
+
+(12 + 843) % 60 = 15
+
+It will be 15 minutes past the hour. Likewise, we can ask:
+
+It is currently 23 minutes past the hour. What minute will it be 97 minutes from now?
+
+(23 + 97) % 60 = 0
+
+0 is another way of saying there is no remainder.
+
+Essentially the result of the modulo (%) operation is always between 0 and 59, inclusive, in this case. This happens to be a very useful property as even very large numbers can be brought down to size with modulo:
+
+14738495684013 % 60 = 33
+
+We'll be using modulo as we define field arithmetic.
+
+== Finite Field Addition and Subtraction
+
+Remember that we need to define Finite Field addition in a way as to make sure that the result is still in the set. That is, we want to make sure that addition in a Finite Field is *closed*.
+
+We can utilize what we just learned, modulo arithmetic, to make addition work. Let's say we have a Finite Field of 19:
+
+F~19~={0,1,2,...18}, where a, b ∈ F~19~
+
+Addition being closed means:
+
+a+~f~b ∈ F~19~
+
+We denote finite field addition with +~f~ to avoid confusion with the normal integer addition +.
+
+If we utilize modulo arithmetic, we can guarantee this to be the case. We can define a+~f~b this way:
+
+a+~f~b = (a+b)%19
+
+For example:
+
+7+~f~8 = (7+8)%19 = 15
+
+11+~f~17 = (11+17)%19 = 9
+
+and so on.
+
+This should be somewhat intuitive. We take any two numbers in the set, add and "wrap around" the end to get the sum. We are creating our own addition operator here and it's a bit unintuitive. After all 11 +~f~ 17 = 9 just doesn't look right for most people because they're not used to Finite Field addition.
+
+More generally, we can define field addition this way:
+
+a, b ∈ F~p~, a+~f~b = (a+b)%p
+
+We can also define the additive inverse this way.
+
+a ∈ F~p~ implies that -~p~a ∈ F~p~
+
+-~f~a = (-a) % p
+
+Again, for clarity, we use -~f~ to distinguish field subtraction and negation from integer subtraction and negation.
+
+In F~19~:
+
+-9 = (-9) % 19 = 10
+
+Which means that:
+
+9 +~f~ 10 = 0
+
+And that turns out to be true.
+
+Similarly, we can do field subtraction.
+
+a, b ∈ F~p~, a-~f~b = (a-b)%p
+
+In F~19~:
+
+11-~f~9=(11-9)%19=2
+
+6-~f~13=(6-13)%19=12
+
+and so on.
+

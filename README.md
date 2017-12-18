@@ -1,4 +1,4 @@
-# programmingbitcoin
+# General
 
 Repository for the book to be published by O'Reilly.
 
